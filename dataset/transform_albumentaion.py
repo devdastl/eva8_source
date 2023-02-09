@@ -29,5 +29,4 @@ def data_albumentation(horizontalflip_prob,rotate_limit,shiftscalerotate_prob,nu
     test_transforms = A.Compose([A.Normalize(mean=mean, std=std, always_apply=True),
                                  ToTensorV2()])
 
-    #return lambda img:train_transforms(image=np.array(img))["image"],lambda img:test_transforms(image=np.array(img))["image"]
     return train_transforms, test_transforms

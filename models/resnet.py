@@ -62,15 +62,15 @@ class ResNet(nn.Module):
         out = F.avg_pool2d(out, 4)
         out = out.view(out.size(0), -1)
         out = self.linear(out)
-        return out
+        return F.log_softmax(out, dim=-1)
 
 
 def ResNet18(num_class):
     return ResNet(BasicBlock, [2, 2, 2, 2], num_classes=num_class)
 
 
-def ResNet34():
-    return ResNet(BasicBlock, [3, 4, 6, 3])
+def ResNet34(num_class):
+    return ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_class)
 
 
 def test(num_class):
