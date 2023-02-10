@@ -16,7 +16,7 @@ class TestModel():
     self.test_misc_label=[]
 
 
-  def test(self):
+  def eval(self, cur_epoch, EPOCH):
     self.model.eval()
     test_loss = 0
     correct = 0
@@ -28,7 +28,8 @@ class TestModel():
             pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
 
             for i in range(len(pred)): #loop through prediction and append wrong prediction one
-              if pred[i] != target[i] and len(self.test_misc_img) != 10:
+              if pred[i] != target[i] and len(self.test_misc_img) != 10 and cur_epoch == EPOCH-1:
+                print(f"generating mis-classified images for epoch {cur_epoch}")
                 self.test_misc_img.append(data[i])
                 self.test_misc_label.append((pred[i].item(), target[i].item()))
 
