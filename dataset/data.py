@@ -5,7 +5,7 @@ from torchvision import datasets, transforms
 import torch
 from PIL import Image
 import numpy as np
-from dataset.transform_albumentaion import data_albumentation
+from transform_albumentaion import data_albumentation
 
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, dataset_name, train=True):
