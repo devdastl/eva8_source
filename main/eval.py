@@ -10,8 +10,8 @@ class TestModel():
     self.model = model
     self.device = device
     self.dataloader = dataloader
-    self.test_losses = []
-    self.test_acc = []
+    self.losses = []
+    self.acc = []
     self.test_misc_img=[]
     self.test_misc_label=[]
 
@@ -36,10 +36,10 @@ class TestModel():
             correct += pred.eq(target.view_as(pred)).sum().item()
 
     test_loss /= len(self.dataloader.dataset)
-    self.test_losses.append(test_loss)
+    self.losses.append(test_loss)
 
     print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
         test_loss, correct, len(self.dataloader.dataset),
         100. * correct / len(self.dataloader.dataset)))
     
-    self.test_acc.append(100. * correct / len(self.dataloader.dataset))
+    self.acc.append(100. * correct / len(self.dataloader.dataset))

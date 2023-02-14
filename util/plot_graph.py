@@ -7,7 +7,7 @@ def plot_loss_accuracy(*argv):
     fig, ax = plt.subplots(2,1, figsize=(8,8))
     
     for indx, args in enumerate(argv):
-        loss = args.test_losses
+        loss = args.losses
         lbl = "Model" + str(indx+1)
         ax[0].plot(loss, label=lbl)
     ax[0].set_xlabel('Iteration')
@@ -15,7 +15,7 @@ def plot_loss_accuracy(*argv):
     ax[0].legend()
 
     for indx, args in enumerate(argv):
-        acc = args.test_acc
+        acc = args.acc
         lbl = "Model" + str(indx+1)
         ax[1].plot(acc, label=lbl)
     ax[1].set_xlabel('Iteration')

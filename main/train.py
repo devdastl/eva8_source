@@ -11,14 +11,15 @@ class TrainModel():
     self.device = device
     self.dataloader = dataloader
     self.optimizer = optimizer
-    self.train_losses = []
-    self.train_acc = []
+    self.losses = []
+    self.acc = []
 
   def train_a(self, l1_lambda=0.001, L1_reg=False):
       self.model.train()
       pbar = tqdm(self.dataloader)
       correct = 0
       processed = 0
+      train_loss = 0
 
       for batch_idx, (data, target) in enumerate(pbar):
         # get samples
@@ -32,7 +33,7 @@ class TrainModel():
 
         # Calculate loss
         loss = F.nll_loss(y_pred, target) if not (L1_reg) else (F.nll_loss(y_pred, target) + self.l1_loss(l1_lambda))
-        self.train_losses.append(loss)
+        train_loss += loss
 
         # Backpropagation
         loss.backward()
@@ -45,7 +46,10 @@ class TrainModel():
         processed += len(data)
 
         pbar.set_description(f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
-      self.train_acc.append(100*correct/processed)
+
+      self.acc.append(100*correct/processed)
+      train_loss /= len(self.dataloader.dataset)
+      self.losses.append(train_loss.item())
 
   # function to implement L1 regularization
   def l1_loss(self, l1_lambda):
