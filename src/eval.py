@@ -6,10 +6,11 @@ import torch.nn.functional as F
 
 
 class TestModel():
-  def __init__(self, model, device, dataloader):
+  def __init__(self, model, device, dataloader, criterion):
     self.model = model
     self.device = device
     self.dataloader = dataloader
+    self.criterion = criterion
     self.losses = []
     self.acc = []
     self.test_misc_img=[]
@@ -24,7 +25,8 @@ class TestModel():
         for data, target in self.dataloader:
             data, target = data.to(self.device), target.to(self.device)
             output = self.model(data)
-            test_loss += F.nll_loss(output, target, reduction='sum').item()  # sum up batch loss
+
+            test_loss += self.criterion(output, target).item()  # sum up batch loss
             pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
 
             for i in range(len(pred)): #loop through prediction and append wrong prediction one

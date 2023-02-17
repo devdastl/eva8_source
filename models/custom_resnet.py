@@ -24,9 +24,9 @@ class ResBlock(nn.Module):
     return x
 
 
-class custom_resnet(nn.Module):
+class CustomResNet(nn.Module):
   def __init__(self, dropout=0.05):
-    super(custom_resnet, self).__init__()
+    super(CustomResNet, self).__init__()
 
     self.prep_layer = nn.Sequential(nn.Conv2d(3, 64, kernel_size=3, padding=1, bias=False, stride=1),
                                     nn.BatchNorm2d(64),

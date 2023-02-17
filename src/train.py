@@ -6,11 +6,14 @@ from tqdm import tqdm
 import torch.nn.functional as F
 
 class TrainModel():
-  def __init__(self, model, device, dataloader, optimizer):
+  def __init__(self, model, device, dataloader, criterion, optimizer, scheduler):
     self.model = model
     self.device = device
     self.dataloader = dataloader
     self.optimizer = optimizer
+    self.scheduler = scheduler
+    self.criterion = criterion
+    self.lr_trend = []
     self.losses = []
     self.acc = []
 
@@ -32,19 +35,23 @@ class TrainModel():
         y_pred = self.model(data)
 
         # Calculate loss
-        loss = F.nll_loss(y_pred, target) if not (L1_reg) else (F.nll_loss(y_pred, target) + self.l1_loss(l1_lambda))
+        loss = self.criterion(y_pred, target) if not (L1_reg) else (self.criterion(y_pred, target) + self.l1_loss(l1_lambda))
         train_loss += loss
 
         # Backpropagation
         loss.backward()
         self.optimizer.step()
+        # updating LR
+        if self.scheduler:
+            if not isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                self.scheduler.step()
+                self.lr_trend.append(self.scheduler.get_last_lr()[0])
+
 
         # Update pbar-tqdm
-
         pred = y_pred.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
         correct += pred.eq(target.view_as(pred)).sum().item()
         processed += len(data)
-
         pbar.set_description(f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
 
       self.acc.append(100*correct/processed)

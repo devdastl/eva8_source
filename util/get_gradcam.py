@@ -14,7 +14,7 @@ def generate_grad(images, model):
         rgb_img = np.transpose(rgb_img, (1, 2, 0))
         rgb_img_list.append(rgb_img)
 
-    target_layer4 = [model.layer4[-1]]
+    target_layer4 = [model.layer3[-1]]
     cam = GradCAM(model=model, target_layers=target_layer4, use_cuda=False)
 
     for input_tensor, input_rgb in zip(input_tensor_list, rgb_img_list):

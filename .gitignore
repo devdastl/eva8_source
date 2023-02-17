@@ -6,4 +6,5 @@ models/__pycache__/
 util/__pycache__/
 data/
 test.ipynb
+__pycache__/
 
