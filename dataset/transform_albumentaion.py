@@ -15,12 +15,11 @@ def data_albumentation(horizontalflip_prob,rotate_limit,shiftscalerotate_prob,nu
     
     # Train Phase transformations
     train_transforms = A.Compose([A.HorizontalFlip(p=horizontalflip_prob),
-                                  A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=rotate_limit, p=shiftscalerotate_prob),
+                                  A.PadIfNeeded(min_height=40, min_width=40, always_apply=True),
+                                  A.RandomCrop(width=32, height=32,p=1),
                                   A.CoarseDropout(max_holes=num_holes,min_holes = 1, max_height=16, max_width=16, 
                                   p=cutout_prob,fill_value=tuple([x * 255.0 for x in mean]),
                                   min_height=16, min_width=16),
-                                  A.ColorJitter(p=0.25,brightness=0.3, contrast=0.3, saturation=0.30, hue=0.2),
-                                  A.ToGray(p=0.15),
                                   A.Normalize(mean=mean, std=std,always_apply=True),
                                   ToTensorV2()
                                 ])
