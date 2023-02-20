@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import os
 
 #function to plot loss & accuracy graph.
-def plot_loss_accuracy(*argv):
+def plot_loss_accuracy(*argv, title="None"):
 
     fig, ax = plt.subplots(2,1, figsize=(8,8))
     
@@ -22,4 +22,5 @@ def plot_loss_accuracy(*argv):
     ax[1].set_ylabel('Accuracy')
     ax[1].legend()    
 
+    plt.suptitle(title)
     plt.show()

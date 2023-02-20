@@ -14,9 +14,10 @@ def data_albumentation(horizontalflip_prob,rotate_limit,shiftscalerotate_prob,nu
     # Calculate mean and std deviation for cifar dataset
     
     # Train Phase transformations
-    train_transforms = A.Compose([A.HorizontalFlip(p=horizontalflip_prob),
+    train_transforms = A.Compose([
                                   A.PadIfNeeded(min_height=40, min_width=40, always_apply=True),
                                   A.RandomCrop(width=32, height=32,p=1),
+                                  A.HorizontalFlip(p=horizontalflip_prob),
                                   A.CoarseDropout(max_holes=num_holes,min_holes = 1, max_height=16, max_width=16, 
                                   p=cutout_prob,fill_value=tuple([x * 255.0 for x in mean]),
                                   min_height=16, min_width=16),
